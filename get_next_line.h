@@ -21,5 +21,7 @@ size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strdup(const char *s);
+char	*extract_line(const char *stash);
+char	*update_stash(char *stash);
 
 #endif 
