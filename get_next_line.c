@@ -12,6 +12,13 @@
 
 #include "get_next_line.h"
 
+static char	*free_buffer_and_stash(char *buffer, char *stash)
+{
+	free(buffer);
+	free(stash);
+	return (NULL);
+}
+
 char	*extract_line(const char *stash)
 {
 	size_t	index;
@@ -43,13 +50,56 @@ char	*update_stash(char *stash)
 	}
 	new_stash = ft_substr(stash, index + 1, ft_strlen(stash) - (index + 1));
 	free(stash);
-
 	if (!new_stash || new_stash[0] == '\0')
 	{
 		free(new_stash);
-		return ((NULL));
+		return (NULL);
 	}
 	return (new_stash);
+}
+
+char	*read_to_stash(int fd, char *stash)
+{
+	char	*buffer;
+	ssize_t	bytes;
+	char	*temp;
+
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	bytes = 1;
+	while (!ft_strchr(stash, '\n') && bytes > 0)
+	{
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes < 0)
+			return (free_buffer_and_stash(buffer, stash));
+		buffer[bytes] = '\0';
+		temp = ft_strjoin(stash, buffer);
+		free(stash);
+		stash = temp;
+		if (!stash)
+		{
+			free(buffer);
+			return (NULL);
+		}
+	}
+	free(buffer);
+	return (stash);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stash;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	stash = read_to_stash(fd, stash);
+	if (!stash)
+		return (NULL);
+	line = extract_line(stash);
+	stash = update_stash(stash);
+	return (line);
 }
 
 char	*get_next_line(int fd)
