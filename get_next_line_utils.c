@@ -6,7 +6,7 @@
 /*   By: ebin-ahm <ebin-ahm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 17:48:54 by ebin-ahm          #+#    #+#             */
-/*   Updated: 2026/01/22 19:19:27 by ebin-ahm         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:45:22 by ebin-ahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 char	*ft_strdup(const char *s)
 {
 	size_t	len;
-	size_t	i;
+	size_t	index;
 	char	*dup;
 
 	if (!s)
@@ -80,20 +80,20 @@ char	*ft_strdup(const char *s)
 	dup = (char *)malloc(len + 1);
 	if (!dup)
 		return (NULL);
-	i = 0;
-	while (i < len)
+	index = 0;
+	while (index < len)
 	{
-		dup[i] = s[i];
-		i++;
+		dup[index] = s[index];
+		index++;
 	}
-	dup[i] = '\0';
+	dup[index] = '\0';
 	return (dup);
 }
 
 char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
 	size_t	s_len;
-	size_t	i;
+	size_t	index;
 	char	*sub;
 
 	if (!s)
@@ -106,13 +106,12 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	sub = (char *)malloc(len + 1);
 	if (!sub)
 		return (NULL);
-	i = 0;
-	while (i < len)
+	index = 0;
+	while (index < len)
 	{
-		sub[i] = s[start + i];
-		i++;
+		sub[index] = s[start + index];
+		index++;
 	}
-	sub[i] = '\0';
+	sub[index] = '\0';
 	return (sub);
 }
-
