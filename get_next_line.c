@@ -6,7 +6,7 @@
 /*   By: ebin-ahm <ebin-ahm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 17:48:43 by ebin-ahm          #+#    #+#             */
-/*   Updated: 2026/01/22 17:48:46 by ebin-ahm         ###   ########.fr       */
+/*   Updated: 2026/02/07 20:03:47 by ebin-ahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ char	*extract_line(const char *stash)
 	if (!stash || stash[0] == '\0')
 		return (NULL);
 	index = 0;
-	while (stash[index] && stash[index] != '\n')
+	while (stash[index] && stash[index] != DELIM)
 		index++;
-	if (stash[index] == '\n')
+	if (stash[index] == DELIM)
 		return (ft_substr(stash, 0, index + 1));
 	return (ft_strdup(stash));
 }
@@ -41,7 +41,7 @@ char	*update_stash(char *stash)
 	if (!stash)
 		return (NULL);
 	index = 0;
-	while (stash[index] && stash[index] != '\n')
+	while (stash[index] && stash[index] != DELIM)
 		index++;
 	if (stash[index] == '\0')
 	{
@@ -66,9 +66,9 @@ char	*read_to_stash(int fd, char *stash)
 
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
-		return (NULL);
+		return (free(stash), NULL);
 	bytes = 1;
-	while (!ft_strchr(stash, '\n') && bytes > 0)
+	while (!ft_strchr(stash, DELIM) && bytes > 0)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes < 0)
@@ -76,12 +76,9 @@ char	*read_to_stash(int fd, char *stash)
 		buffer[bytes] = '\0';
 		temp = ft_strjoin(stash, buffer);
 		free(stash);
+		if (!temp)
+			return (free_buffer_and_stash(buffer, NULL));
 		stash = temp;
-		if (!stash)
-		{
-			free(buffer);
-			return (NULL);
-		}
 	}
 	free(buffer);
 	return (stash);
