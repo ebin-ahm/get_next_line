@@ -67,6 +67,72 @@ To compile the code with buffer size of 42, run:
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 main.c get_next_line.c get_next_line_utils.c
 ```
 
+To compile the code with buffer size of 42 & different delimiter ('-' in this case)
+```bash
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D DELIM=\'-\' main.c get_next_line.c get_next_line_utils.c
+```
+
+To run valgrind to check for any memory leaks
+
+```bash
+cc -Wall -Wextra -Werror -g -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c main.c -o gnl
+
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./gnl
+
+```
+
+main.c for file testing
+```bash
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "get_next_line.h"
+
+int	main(void)
+{
+	int		fd;
+	char	*line;
+
+	fd = open("file.txt", O_RDONLY);
+	if (fd < 0)
+		return (1);
+	line = get_next_line(fd);
+	while (line)
+	{
+		printf("%s\n", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (0);
+}
+```
+
+main.c for stdin testing
+
+```bash
+#include <stdio.h>
+#include <stdlib.h>
+#include "get_next_line.h"
+
+int main(void)
+{
+    char *line;
+
+    while ((line = get_next_line(0)) != NULL)
+    {
+        printf("%s", line);
+        free(line);
+    }
+    return (0);
+}
+```
+pipe testing
+```bash
+printf "hello\nworld\n" | ./a.out
+```
+
 ## Algorithm
 
 get_next_line() returns one line per call by storing unread bytes in a persistent stash.
@@ -111,8 +177,8 @@ get_next_line() returns one line per call by storing unread bytes in a persisten
 - Get Next Line pdf version: 14.2
 
 ### AI-Assisted Learning
-AI (ChatGPT) was used for:
-1. Clarifying concepts such as pointers, memory operations, and linked list operations  
+AI (ChatGPT) was primarily used for:
+1. Clarifying concepts such as memory operations
 2. Explaining algorithms, edge cases, and debugging  
 
 All code was manually written and verified by ebin-ahm.
