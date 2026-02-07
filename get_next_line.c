@@ -101,8 +101,3 @@ char	*get_next_line(int fd)
 	stash = update_stash(stash);
 	return (line);
 }
-
-char	*get_next_line(int fd)
-{
-
-}
