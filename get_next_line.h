@@ -6,7 +6,7 @@
 /*   By: ebin-ahm <ebin-ahm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 17:48:49 by ebin-ahm          #+#    #+#             */
-/*   Updated: 2026/01/22 19:03:13 by ebin-ahm         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:52:40 by ebin-ahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 # include <unistd.h>
 # include <stddef.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include <stdio.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
+# endif
+
+# ifndef DELIM
+#  define DELIM '\n'
 # endif
 
 size_t	ft_strlen(const char *s);
